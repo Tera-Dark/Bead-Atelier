@@ -1,1 +1,3 @@
-import{defineConfig}from'vite';import react from'@vitejs/plugin-react';export default defineConfig({plugins:[react()],base:process.env.GITHUB_PAGES==='true'?'/Bead-Atelier/':'/'});
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react';
+export default defineConfig(({ mode }) => ({ plugins: [react()], base: mode === 'pages' ? '/Bead-Atelier/' : '/' }));
