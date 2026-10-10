@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="./public/bead-paw.png" alt="Bead Atelier 四色拼豆爪爪" width="116" />
+
 # ✳ Bead Atelier
 
 ### 一颗一颗，拼出小美好。

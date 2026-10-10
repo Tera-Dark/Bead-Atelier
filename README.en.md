@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="./public/bead-paw.png" alt="Bead Atelier four-color bead paw" width="116" />
+
 # ✳ Bead Atelier
 
 ### A Little World, Bead by Bead.
