@@ -7,6 +7,9 @@ permissions:
   contents: read
   pages: write
   id-token: write
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -20,6 +23,11 @@ jobs:
           node-version: '22'
       - run: npm install
       - run: npm run build -- --mode pages
+      - name: Verify Pages asset paths
+        run: |
+          grep -q '/Bead-Atelier/assets/' dist/index.html
+          test -n "$(find dist/assets -name '*.js' -print -quit)"
+          test -n "$(find dist/assets -name '*.css' -print -quit)"
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
