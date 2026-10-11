@@ -33,18 +33,18 @@ The goal is a creative tool that feels **delightful, focused and tactile**, rath
 
 | Area | Available now |
 | --- | --- |
-| 2D editor | Default 2D board with click-and-drag bead placement |
-| 3D preview | Three.js pegboard, hollow beads, lights and orbit camera |
-| Tools | Brush, eraser, connected-area fill, color picker, undo and redo |
-| Palette | 16 built-in demonstration colors |
-| Image conversion | Center-crop an image into a 24 × 24 bead pattern |
-| Editor controls | Grid visibility, zoom, keyboard shortcuts |
-| Projects | Browser-local autosave plus JSON import / export |
-| Export | PNG image and bead / color usage counts |
-| Ambience | Optional softly synthesized background audio with volume control |
-| Interface | Simplified Chinese by default, responsive desktop/mobile layouts |
+| Board and navigation | 24×24, 29×29 and 52×52 boards; drag-to-pan 2D canvas, 60%–220% zoom, interactive minimap |
+| Personal layout | Independently show or hide navigation, tools, palette, favorites, minimap, animation and status bars |
+| Drawing tools | Brush, eraser, flood fill, picker, hand/pan, undo and redo |
+| Quick palette | 16 demonstration colors with a persistent favorite-color tray |
+| Image conversion | Original/converted preview, board dimensions, 2–16 colors, approximate Lab matching, optional dithering, crop and alpha support |
+| Beginner projects | Six cute animal templates, translucent tracing guides and color-specific progress |
+| 3D mode | Instanced bead meshes, 3D pegboard, lighting and visual-only fused-bead simulation |
+| Printable patterns | Coordinates, numbered cells, five-cell guides, quantities, SVG, CSV, print/PDF |
+| Files | PNG image, editable JSON project import/export, automatic browser-local storage |
+| Ambience | Opt-in synthesized background melody, soft placement sounds and assembly playback |
 
-> **Early version limitations:** The board is fixed at **24 × 24**. The built-in palette is illustrative, not calibrated to a real-world bead brand. Image conversion uses basic nearest-RGB matching, not advanced color science. Music starts only after the user opts in. The **app UI is currently Chinese-only**; this English translation applies to the README.
+> **Current limitations:** The 16-color palette is a **demonstration palette**, not verified physical bead-brand color data. You may add your own pattern color labels, but should check them against real supplies. The fused-bead view is a visual approximation, not a physical heat simulation. Music must be enabled by the user. **The app UI is currently in Chinese**; English localization is planned.
 
 ## 🎮 Getting started
 
@@ -96,14 +96,13 @@ Select **GitHub Actions** as the source under **Settings → Pages → Build and
 
 ## 🧭 Roadmap
 
-- [ ] Multiple board dimensions and modular boards
-- [ ] Real bead-brand palettes, codes and inventory controls
-- [ ] Improved image matching, dithering and conversion previews
-- [ ] Color-by-color build guidance, progress tracking and quantities
-- [ ] Faster 3D rendering, refined materials and tactile animations
-- [ ] Printable bead patterns and more export formats
-- [ ] Improved mobile gestures and accessibility
-- [ ] English language switch for the application itself
+- [x] Multiple board sizes and canvas navigation
+- [x] Approximate Lab matching, dithering and image-conversion previews
+- [x] Printable patterns and material quantities
+- [x] Instanced 3D beads, automatic assembly and tactile feedback
+- [ ] Modular pegboards, calibrated physical-brand palettes and inventory
+- [ ] More complete mobile gestures and accessibility
+- [ ] English language switching in the application
 
 ## 💾 Privacy and storage
 
