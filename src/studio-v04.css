@@ -55,3 +55,16 @@
 @media(max-width:700px){.flat-board-shell{width:min(84vw,68vh);min-width:210px;padding:6px}.mini-host{top:9px;right:9px;width:100px}.mini-map{padding:7px}.mini-head{padding-right:13px;font-size:9px}.mini-head small,.mini-caption{display:none}.board-size-pill{font-size:9px;left:8px;top:9px}.frequent-palette{left:7px;bottom:22px;width:135px;padding:7px}.frequent-title{font-size:9px}.favorite-swatches{margin:7px 0}.favorite-swatches button{height:17px;width:17px}.pin-color{font-size:8px}.viewport-hint{font-size:8px;bottom:5px}.layout-pop{right:7px;top:64px}.convert-settings{gap:9px}.editor-dock{gap:4px}.tool-group{gap:2px}.dock-tool{padding:5px}.zoom-group .fit-canvas{display:none}.play-dock>span{display:none}.atelier-workspace{padding:10px 8px 0}}
 @media(max-width:400px){.mini-host{width:86px}.frequent-palette{width:115px}.favorite-swatches button{width:15px;height:15px}.dock-tool{padding:4px}.dock-hide{width:19px!important}.board-area:has(.mini-host) .guide-chip{max-width:150px}}
 @media print{.mini-host,.frequent-palette,.layout-pop{display:none!important}}
+
+/* small tactile finishing touches */
+.bead-landing{position:absolute;z-index:2;pointer-events:none;aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%) scale(.25);box-shadow:inset 0 -3px 4px #533d3620,0 2px 4px #71564916;animation:bead-soft-land .25s cubic-bezier(.22,.85,.2,1) forwards}
+.bead-landing i{position:absolute;display:block;top:35%;left:35%;height:30%;width:30%;background:#fffaf1;border-radius:50%;box-shadow:inset 0 1px 2px #0002}
+@keyframes bead-soft-land{0%{transform:translate(-50%,-50%) scale(.25);opacity:.3;filter:brightness(1.3)}57%{transform:translate(-50%,-50%) scale(1.24);opacity:.96}100%{transform:translate(-50%,-50%) scale(1);opacity:0}}
+.workspace-view{display:flex;align-items:center;gap:9px}.fuse-mode{display:flex;align-items:center;gap:5px;font-size:10px;color:#a68676;background:#fff8f3;border:1px solid #f0dfd4;border-radius:9px;padding:9px 11px;white-space:nowrap}.fuse-mode.active{color:#d08572;background:#faede6}.fuse-mode:hover{background:#f8ebe4}
+.guide-color-step{position:absolute;z-index:7;bottom:17px;right:16px;max-width:265px;background:#fffdfaeb;border:1px solid #f1e1d8;border-radius:12px;padding:10px 12px;box-shadow:0 6px 22px #614a3c19;backdrop-filter:blur(10px)}
+.guide-color-step>b{font-size:10px;color:#a38373}.guide-color-step>div{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}
+.guide-color-step button{border:1.5px solid transparent;border-radius:7px;background:#f9f4f0;color:#a48f82;display:flex;align-items:center;gap:4px;padding:5px 6px;font-size:9px}
+.guide-color-step button.active{background:#fff}.guide-color-step i{height:13px;width:13px;display:block;border-radius:50%}.guide-color-step small{font-size:9px}
+@media(max-width:800px){.guide-color-step{max-width:200px;bottom:12px;right:8px;padding:7px}.fuse-mode{padding:7px;font-size:9px}}
+@media(max-width:600px){.workspace-view{gap:3px}.fuse-mode{font-size:0;padding:8px}.fuse-mode svg{width:17px}.guide-color-step{bottom:15px;max-width:125px}.guide-color-step>div{gap:2px}.guide-color-step button{padding:3px}.guide-color-step button small{display:none}}
+@media(prefers-reduced-motion:reduce){.bead-landing{animation:none;opacity:0}}

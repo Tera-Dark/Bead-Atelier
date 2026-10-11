@@ -1,7 +1,7 @@
 import{useEffect,useRef,useState}from'react';import type{PointerEvent as ReactPointerEvent}from'react';import{Board,boardSize,colors}from'./board';
 type Tool='brush'|'erase'|'fill'|'picker'|'hand';
-type Props={board:Board,tool:Tool,selected:number,onCell:(i:number)=>void,grid:boolean,zoom:number,justPlaced:number,guide?:Board|null,pan:{x:number;y:number},onPan:(p:{x:number;y:number})=>void,onZoom:(z:number)=>void,onViewport:(r:{width:number;height:number;boardPx:number})=>void,accentColor?:string};
-export default function FlatBoard({board,tool,selected,onCell,grid,zoom,justPlaced,guide,pan,onPan,onZoom,onViewport,accentColor}:Props){
+type Props={board:Board,tool:Tool,selected:number,onCell:(i:number)=>void,grid:boolean,zoom:number,justPlaced:number,placementId?:number,guide?:Board|null,pan:{x:number;y:number},onPan:(p:{x:number;y:number})=>void,onZoom:(z:number)=>void,onViewport:(r:{width:number;height:number;boardPx:number})=>void,accentColor?:string};
+export default function FlatBoard({board,tool,selected,onCell,grid,zoom,justPlaced,placementId=0,guide,pan,onPan,onZoom,onViewport,accentColor}:Props){
  const canvas=useRef<HTMLCanvasElement>(null),host=useRef<HTMLDivElement>(null),sheet=useRef<HTMLDivElement>(null);
  const gesture=useRef<{mode:'paint'|'pan';x:number;y:number;px:number;py:number;last:number}|null>(null);
  const [space,setSpace]=useState(false);const [hover,setHover]=useState(-1);const size=boardSize(board);
@@ -23,6 +23,7 @@ export default function FlatBoard({board,tool,selected,onCell,grid,zoom,justPlac
  return <div className={'flat-viewport '+(tool==='hand'||space?'is-panning':'')} ref={host}>
   <div className="flat-board-shell" ref={sheet} style={{transform:`translate(calc(-50% + ${pan.x}px),calc(-50% + ${pan.y}px)) scale(${zoom/100})`}}>
    <canvas ref={canvas} className="flat-board-canvas" aria-label="平面拼豆画布，可绘制并拖动平移" onContextMenu={e=>e.preventDefault()} onPointerDown={down} onPointerMove={move} onPointerUp={up} onPointerCancel={up} onLostPointerCapture={up} onPointerLeave={()=>setHover(-1)}/>
+   {justPlaced>=0&&board[justPlaced]!==null&&<span key={placementId} className="bead-landing" style={{left:((justPlaced%size+.5)/size*100)+'%',top:((Math.floor(justPlaced/size)+.5)/size*100)+'%',width:(100/size)+'%',background:colors[board[justPlaced]!]}}><i/></span>}
   </div>
   <span className="viewport-hint">{tool==='hand'?'拖动平移画布':'空格 / 右键拖动平移 · Ctrl + 滚轮缩放'}</span>
  </div>
