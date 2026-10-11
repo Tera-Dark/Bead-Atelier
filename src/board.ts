@@ -1,6 +1,6 @@
 export const N=24;
 export const SUPPORTED_SIZES=[24,29,52] as const;
-export const colors=['#e7a097','#e9b78e','#f2d49f','#f7e8c7','#b7c8a7','#8bafa2','#9ebeca','#aaa8cb','#d0abc2','#977576','#79706b','#fcfaf4','#50545a','#d6c9b8','#db7b6c','#d5bb68'];
+export const colors=['#e7a097','#e9b78e','#f2d49f','#f7e8c7','#b7c8a7','#8bafa2','#9ebeca','#aaa8cb','#d0abc2','#977576','#79706b','#fcfaf4','#50545a','#d6c9b8','#db7b6c','#d5bb68','#302e2d','#573a2f','#85502f','#b67a49','#df943c','#f0af65','#969493','#b7b5b1','#719f3e','#91c053','#f6c52f','#f8d977','#f4b6bc','#f0eae2'];
 export type Board=(number|null)[];
 export const boardSize=(board:Board)=>Math.round(Math.sqrt(board.length));
 export const empty=(size:number=N):Board=>Array(size*size).fill(null);
