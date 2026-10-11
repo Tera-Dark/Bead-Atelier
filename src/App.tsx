@@ -57,6 +57,7 @@ export default function App(){
  boardRef.current=board;
  useEffect(()=>{setSaveState('saving');const timer=window.setTimeout(()=>{try{localStorage.setItem('atelier-board',JSON.stringify(board));setSaveState('saved')}catch{setSaveState('error')}},320);return()=>window.clearTimeout(timer)},[board]);
  useEffect(()=>localStorage.setItem('atelier-name',name),[name]);
+ useEffect(()=>{const flush=()=>{try{localStorage.setItem('atelier-board',JSON.stringify(boardRef.current))}catch{}};window.addEventListener('pagehide',flush);return()=>window.removeEventListener('pagehide',flush)},[]);
  useEffect(()=>localStorage.setItem('atelier-render-style',renderStyle),[renderStyle]);
  useEffect(()=>{localStorage.setItem('atelier-settings',JSON.stringify(settings));musicRef.current?.setVolume(settings.volume/100)},[settings]);
  useEffect(()=>localStorage.setItem('atelier-panels',JSON.stringify(panels)),[panels]);

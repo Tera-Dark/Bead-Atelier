@@ -56,11 +56,10 @@ export default function FlatBoard({board,tool,selected,onCell,grid,zoom,justPlac
     if(beads){ctx.fillStyle='#fdf9f5';shapeCircle(cx,cy,unit*.152);ctx.fill();ctx.strokeStyle='#00000020';ctx.lineWidth=.7;ctx.stroke()}
   }
   if(grid||chart){
-    const major=i%size%5===0||Math.floor(i/size)%5===0;
-    if(chart||!pixel||zoom>=145){
-      ctx.strokeStyle=chart?(major?'#d9afa2':'#e9e1db'):(pixel?'#d9cec657':'#e5ddd5');
-      ctx.lineWidth=chart&&major?1.15:.45;ctx.strokeRect(x+.25,y+.25,unit-.5,unit-.5);
-    }
+    const major=guideSpacing>0&&(i%size%guideSpacing===0||Math.floor(i/size)%guideSpacing===0);
+    ctx.strokeStyle=chart?(major?'#d9afa2':'#e9e1db'):(pixel?'#d9cec657':'#e5ddd5');
+    ctx.lineWidth=chart&&major?1.15:.45;
+    ctx.strokeRect(x+.25,y+.25,unit-.5,unit-.5);
   }
  }
  if(guideSpacing>0){ctx.save();ctx.strokeStyle='#cc9a86';ctx.lineWidth=size>=52?1.4:1.8;ctx.beginPath();for(let j=0;j<=size;j+=guideSpacing){const p=j*unit+.5;ctx.moveTo(p,0);ctx.lineTo(p,w);ctx.moveTo(0,p);ctx.lineTo(w,p)}ctx.stroke();ctx.restore()}

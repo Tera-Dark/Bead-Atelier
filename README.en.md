@@ -49,10 +49,11 @@ The goal is a creative tool that feels **delightful, focused and tactile**, rath
 
 ## 🎮 Getting started
 
-1. Open the [live studio](https://tera-dark.github.io/Bead-Atelier/).
-2. Choose a color and paint on the default **2D editor**, or import an image.
-3. Switch to **3D preview** to explore your artwork.
-4. Export a **PNG** or save a **JSON project** to continue editing later.
+1. Open the [live studio](https://tera-dark.github.io/Bead-Atelier/). First-time visitors can opt into a six-step interactive walkthrough, or skip it.
+2. Select **New canvas**, choose 24×24, 29×29 or 52×52 and configure 5/10-cell guide lines and coordinates. Back up an existing project before replacing it.
+3. Paint with the tools and palette, import an image or pick an animal template. A dragged brush stroke can be undone in one step.
+4. Switch to **3D preview** or open **Pattern sheet** for numbered cells and material quantities.
+5. Export a **PNG** for sharing or **JSON** to continue later.
 
 ### Keyboard shortcuts
 
@@ -65,7 +66,9 @@ The goal is a creative tool that feels **delightful, focused and tactile**, rath
 | `H` or `Space` + drag | Pan the bounded 2D canvas |
 | Mouse wheel (2D) | Zoom toward the cursor, 75%–300% |
 | Right drag (2D) | Pan the canvas |
-| `Ctrl / Cmd + Z` | Undo |
+| `Ctrl / Cmd + N` | New canvas |
+| `Ctrl / Cmd + S` | Download a JSON project backup |
+| `Ctrl / Cmd + Z` | Undo one complete brush stroke |
 | `Ctrl / Cmd + Shift + Z` or `Ctrl / Cmd + Y` | Redo |
 | Right drag (3D) | Orbit camera |
 | Mouse wheel (3D) | Zoom camera |
