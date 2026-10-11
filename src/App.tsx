@@ -48,7 +48,7 @@ export default function App(){
  const [imageFile,setImageFile]=useState<File|null>(null),[imageUrl,setImageUrl]=useState<string|null>(null);
  const [imageOpts,setImageOpts]=useState<ImageOptions>({size:24,maxColors:12,dither:false,fit:'contain',transparent:true});
  const [imageResult,setImageResult]=useState<Board|null>(null),[imageError,setImageError]=useState(''),[converting,setConverting]=useState(false);
- const [patternLabels,setPatternLabels]=useState(true),[codes,setCodes]=useState<string[]>(()=>{try{const a=JSON.parse(localStorage.getItem('atelier-codes')||'null');return Array.isArray(a)?Array.from({length:16},(_,i)=>typeof a[i]==='string'?a[i].slice(0,6):''):Array(16).fill('')}catch{return Array(16).fill('')}});
+ const [patternLabels,setPatternLabels]=useState(true),[codes,setCodes]=useState<string[]>(()=>{try{const a=JSON.parse(localStorage.getItem('atelier-codes')||'null');return Array.isArray(a)?Array.from({length:colors.length},(_,i)=>typeof a[i]==='string'?a[i].slice(0,6):''):Array(colors.length).fill('')}catch{return Array(16).fill('')}});
  const imageInput=useRef<HTMLInputElement>(null),projectInput=useRef<HTMLInputElement>(null);
  const size=boardSize(board),count=board.filter(v=>v!==null).length,used=colorCounts(board);
  const inGuide=guide!==null&&guide.length===board.length;
