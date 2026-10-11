@@ -32,7 +32,7 @@ const toolItems:[Tool,string,typeof Paintbrush][]=[
 return <div className="atelier-app">
   <header className="atelier-header">
     <button className="atelier-brand" onClick={()=>{setPage('editor');setDrawer(null)}} aria-label="返回 Bead Atelier 创作工作台">
-      <img src={import.meta.env.BASE_URL+'bead-paw.png'} width="39" height="39" alt="四色拼豆爪爪"/>
+      <img src={'./bead-paw.png'} width="39" height="39" alt="四色拼豆爪爪"/>
       <span>bead atelier<span className="brand-stop">.</span><small>拼豆工作室</small></span>
     </button>
     <div className="header-project">
