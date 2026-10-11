@@ -1,0 +1,35 @@
+/* v0.5 — bounded pixel canvas and pixel-art-first template cards */
+.finite-canvas{position:relative;width:100%;height:100%;overflow:hidden;touch-action:none;background:radial-gradient(ellipse at center,#fffdfb 0%,#faf7f3 76%);cursor:crosshair;user-select:none;overscroll-behavior:contain}
+.finite-canvas.panning{cursor:grab}.finite-canvas.panning:active{cursor:grabbing}
+.finite-artboard{position:absolute;top:50%;left:50%;transform-origin:center center;box-sizing:border-box;padding:7px;background:#fffaf4;border:1px solid #e7ddd3;border-radius:7px;box-shadow:0 14px 40px #65574824,0 2px 5px #65574812;will-change:transform;touch-action:none;pointer-events:none}
+.finite-pixels{width:100%;height:100%;display:block;pointer-events:none;touch-action:none}
+.mode-pixel .finite-pixels,.mode-chart .finite-pixels{image-rendering:pixelated}
+.mode-beads .finite-pixels,.mode-dots .finite-pixels{image-rendering:auto}
+.finite-cell-hover{position:absolute;border:1px solid #d8917c;box-shadow:inset 0 0 0 1px #fff7ecb8;background:#f7bfa015;pointer-events:none;box-sizing:border-box}
+.finite-shortcuts{position:absolute;right:13px;bottom:11px;color:#b5a99f;font-size:10px;pointer-events:none;letter-spacing:.1px;text-shadow:0 1px 0 #fff}
+.finite-artboard .bead-landing{position:absolute;pointer-events:none;z-index:3;aspect-ratio:1;box-sizing:border-box;transform:translate(-50%,-50%) scale(.35);opacity:1;animation:pixel-landing .22s cubic-bezier(.18,.9,.28,1) both;box-shadow:inset 0 -2px 4px #00000019,0 3px 8px #55463726}
+.finite-artboard .bead-landing.style-pixel,.finite-artboard .bead-landing.style-chart{border-radius:2px;box-shadow:0 0 0 2px #fffdfc}
+.finite-artboard .bead-landing.style-beads,.finite-artboard .bead-landing.style-dots{border-radius:50%;width:var(--cell-px,auto)}
+.finite-artboard .bead-landing i{display:block;position:absolute;left:35%;top:35%;width:30%;height:30%;border-radius:50%;background:#fff9f3}
+@keyframes pixel-landing{0%{transform:translate(-50%,-50%) scale(.4);filter:brightness(1.2)}65%{transform:translate(-50%,-50%) scale(1.18)}100%{transform:translate(-50%,-50%) scale(1);opacity:0}}
+.workspace-view{gap:11px}.render-style-picker{display:flex;align-items:center;gap:8px;font-size:10px;color:#a8958a;background:#fffdfa;border:1px solid #eee7e1;border-radius:9px;padding:5px 7px 5px 11px;white-space:nowrap}
+.render-style-picker select{border:0;background:transparent;color:#947567;font-size:11px;font-weight:700;cursor:pointer;padding:4px 5px;outline:0}
+.render-style-picker select:focus-visible{outline:2px solid #d49f8e;border-radius:5px}
+.context-drawer:has(.template-collection-note){width:344px}
+.template-collection-note{display:flex;align-items:center;gap:6px;color:#b78d7e;background:#fdf7f2;padding:8px 10px;margin:0 0 16px;border-radius:9px;font-size:10px}
+.template-entry{position:relative;background:#fdfbfa}
+.template-preview{aspect-ratio:1;position:relative;padding:8px;background:linear-gradient(145deg,#fcf7f4,#fffdfa)}
+.template-preview:hover{background:#fff5ef}
+.template-thumb{display:block;max-width:100%;width:96%;height:96%;image-rendering:pixelated;filter:none;shape-rendering:crispEdges}
+.template-details{padding:8px 9px 3px}
+.template-details strong{font-size:11px;line-height:1.45}
+.template-details small{font-size:9px;line-height:1.55;white-space:normal}
+.template-details .difficulty{display:inline-block;margin-top:5px;color:#a68b7e;font-size:9px;background:#f9eee8;border-radius:4px;padding:2px 6px}
+.template-details .difficulty.advanced{background:#f1eaf7;color:#9575ab}
+.template-actions{gap:4px;padding:7px}
+.template-actions button{font-size:10px;padding:9px 1px}
+.board-area .mini-host{z-index:7}
+@media(max-width:1250px){.render-style-picker span{display:none}.context-drawer:has(.template-collection-note){width:288px}}
+@media(max-width:850px){.workspace-heading{flex-wrap:wrap}.workspace-view{margin-left:auto}.context-drawer:has(.template-collection-note){width:248px}.template-list{gap:7px}.finite-shortcuts{font-size:9px}}
+@media(max-width:600px){.render-style-picker{gap:0;padding:4px}.render-style-picker select{font-size:10px;max-width:112px}.finite-artboard{padding:3px;border-radius:4px}.finite-shortcuts{font-size:8px;bottom:5px;right:8px}.context-drawer:has(.template-collection-note){width:min(340px,92vw)}}
+@media(prefers-reduced-motion:reduce){.finite-artboard .bead-landing{animation:none;opacity:0}}

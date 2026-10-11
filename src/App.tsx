@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { ArrowDownToLine, Check, ChevronDown, ChevronLeft, ChevronRight, CircleHelp, Download, Eraser, Eye, EyeOff, FileImage, FolderOpen, Grid2X2, Hand, Heart, ImagePlus, Layers3, Maximize2, Minus, Paintbrush, PaintBucket, Palette, PanelLeftClose, PanelLeftOpen, Pipette, Play, Pause, Printer, Redo2, RotateCcw, Settings2, SlidersHorizontal, Sparkles, Star, Undo2, Volume2, VolumeX, X, ZoomIn, ZoomOut, Box, BookOpen } from 'lucide-react';
 import Scene from './Scene';
-import FlatBoard from './FlatBoard';
+import FlatBoard, { type BeadRenderStyle, MIN_ZOOM, MAX_ZOOM } from './FlatBoard';
 import BeadPreview from './BeadPreview';
 import Minimap from './Minimap';
 import PatternSheet from './PatternSheet';
@@ -29,6 +29,7 @@ export default function App(){
  const [board,setBoard]=useState<Board>(restore),boardRef=useRef<Board>(board);
  const history=useRef<Board[]>([]),redoHistory=useRef<Board[]>([]);
  const [selected,setSelected]=useState(0),[tool,setTool]=useState<Tool>('brush');
+ const [renderStyle,setRenderStyle]=useState<BeadRenderStyle>(()=>{const v=localStorage.getItem('atelier-render-style');return v==='beads'||v==='dots'||v==='chart'||v==='pixel'?v:'pixel'});
  const [view,setView]=useState<'2d'|'3d'>('2d'),[section,setSection]=useState<Section>('editor'),[drawer,setDrawer]=useState<Drawer>(null);
  const [name,setName]=useState(()=>localStorage.getItem('atelier-name')||'未命名作品');
  const [settings,setSettings]=useState<Settings>(()=>loadValue('atelier-settings',settingsDefaults));
@@ -53,6 +54,7 @@ export default function App(){
  boardRef.current=board;
  useEffect(()=>localStorage.setItem('atelier-board',JSON.stringify(board)),[board]);
  useEffect(()=>localStorage.setItem('atelier-name',name),[name]);
+ useEffect(()=>localStorage.setItem('atelier-render-style',renderStyle),[renderStyle]);
  useEffect(()=>{localStorage.setItem('atelier-settings',JSON.stringify(settings));musicRef.current?.setVolume(settings.volume/100)},[settings]);
  useEffect(()=>localStorage.setItem('atelier-panels',JSON.stringify(panels)),[panels]);
  useEffect(()=>localStorage.setItem('atelier-favorites',JSON.stringify(favorites)),[favorites]);
@@ -61,7 +63,7 @@ export default function App(){
  useEffect(()=>{if(!imageFile){setImageResult(null);return}let cancelled=false;setConverting(true);setImageError('');convertImage(imageFile,imageOpts).then(b=>{if(!cancelled)setImageResult(b)}).catch(e=>{if(!cancelled){setImageError(e instanceof Error?e.message:'转换失败');setImageResult(null)}}).finally(()=>{if(!cancelled)setConverting(false)});return()=>{cancelled=true}},[imageFile,imageOpts]);
  useEffect(()=>{if(!imageFile){setImageUrl(null);return}const u=URL.createObjectURL(imageFile);setImageUrl(u);return()=>URL.revokeObjectURL(u)},[imageFile]);
  const onViewport=useCallback((r:{width:number;height:number;boardPx:number})=>setMetrics(old=>old.width===r.width&&old.height===r.height&&old.boardPx===r.boardPx?old:r),[]);
- const onZoom=useCallback((n:number)=>setZoom(clamp(n,60,220)),[]);
+ const onZoom=useCallback((n:number)=>setZoom(clamp(n,MIN_ZOOM,MAX_ZOOM)),[]);
  const ui=(key:keyof Panels)=>setPanels(p=>({...p,[key]:!p[key]}));
  const feedback=(i:number,kind:'place'|'erase'|'complete'='place')=>{if(settings.sfx){if(!sfxRef.current)sfxRef.current=new BeadSfx();sfxRef.current.play(kind,settings.sfxVolume/100)}setPlaced(i);setPlacementId(t=>t+1)};
  function commit(next:Board){history.current.push([...boardRef.current]);if(history.current.length>90)history.current.shift();redoHistory.current=[];boardRef.current=next;setBoard(next)}
@@ -81,7 +83,7 @@ export default function App(){
  function selectColor(i:number){setSelected(i);setTool('brush')}
  function toggleFavorite(i:number){setFavorites(prev=>prev.includes(i)?prev.filter(v=>v!==i):[i,...prev].slice(0,8))}
  function switchSize(n:number){if(n===size)return;const next=resizeBoard(boardRef.current,n);if(n<size&&next.filter(v=>v!==null).length<count&&!window.confirm('缩小底板会裁掉边缘部分的拼豆，确定继续吗？'))return;resetGuide();commit(next);setZoom(100);setPan({x:0,y:0});setImageOpts(o=>({...o,size:n}))}
- function useTemplate(t:typeof templates[number],guided:boolean){resetGuide();const target=[...t.board];if(guided){setGuide(target);setGuideName(t.name);commit(empty(24));setName(t.name+' · 跟拼');setSelected(t.palette[0]??0)}else{commit(target);setName(t.name)}setSection('editor');setView('2d');setDrawer(null);setTool('brush');setZoom(100);setPan({x:0,y:0})}
+ function useTemplate(t:typeof templates[number],guided:boolean){resetGuide();const target=[...t.board];if(guided){setGuide(target);setGuideName(t.name);commit(empty(t.size));setName(t.name+' · 跟拼');setSelected(t.palette[0]??0)}else{commit(target);setName(t.name)}setSection('editor');setView('2d');setDrawer(null);setTool('brush');setZoom(100);setPan({x:0,y:0});setImageOpts(o=>({...o,size:t.size}))}
  function onImageSelected(f?:File){if(!f)return;if(!f.type.startsWith('image/')){setImageError('请选择有效图片');return}setImageFile(f);setDrawer('image');setSection('editor')}
  function applyImage(){if(!imageResult)return;resetGuide();commit([...imageResult]);setView('2d');setSection('editor');setDrawer(null);setZoom(100);setPan({x:0,y:0});setName(imageFile?.name.replace(/\.[^.]+$/,'')||'图片拼豆作品')}
  function toggleMusic(){if(music){musicRef.current?.stop();setMusic(false)}else{const a=new AmbientAudio();try{a.start(settings.volume/100);musicRef.current=a;setMusic(true)}catch{setMusic(false)}}}
@@ -119,7 +121,7 @@ export default function App(){
    </div><div className="rail-secondary"><button className="rail-tab" onClick={()=>setPreferences(true)}><Settings2 size={20}/><span>设置</span></button></div></nav>}
    {!panels.rail&&<button className="restore-rail" onClick={()=>ui('rail')} title="显示导航"><PanelLeftOpen size={18}/></button>}
    {drawer&&<aside className="context-drawer"><div className="drawer-heading"><div><small>YOUR LITTLE STUDIO</small><h2>{drawer==='templates'?'可爱模板馆':'图片转拼豆'}</h2></div><button className="quiet-button" title="收起侧栏" onClick={()=>setDrawer(null)}><ChevronLeft size={19}/></button></div>
-    {drawer==='templates'?<><p className="drawer-intro">选一只小动物开始轻松创作。可以载入成品，也可以跟着图案慢慢拼。</p><div className="template-list">{templates.map(t=><div className="template-entry" key={t.id}><button className="template-preview" onClick={()=>useTemplate(t,false)}><TemplateThumb board={t.board}/></button><div className="template-details"><strong>{t.name}</strong><small>{t.count} 颗 · {t.palette.length} 色</small></div><div className="template-actions"><button onClick={()=>useTemplate(t,true)}>跟着拼</button><button onClick={()=>useTemplate(t,false)}>看成品</button></div></div>)}</div></>:
+    {drawer==='templates'?<><p className="drawer-intro">这次从像素画本身出发设计：有表情、有轮廓，也有小配饰。挑一只慢慢拼吧。</p><div className="template-collection-note"><Sparkles size={14}/> 原创像素图案 · 非临摹或搬运图纸</div><div className="template-list">{templates.map(t=><div className="template-entry" key={t.id} title={t.description}><button className="template-preview" onClick={()=>useTemplate(t,false)}><TemplateThumb board={t.board} renderStyle="pixel"/></button><div className="template-details"><strong>{t.name}</strong><small>{t.size}×{t.size} · {t.palette.length} 色 · {t.count} 颗</small><span className={'difficulty '+(t.size===52?'advanced':'')}>{t.difficulty}</span></div><div className="template-actions"><button onClick={()=>useTemplate(t,true)}>跟着拼</button><button onClick={()=>useTemplate(t,false)}>打开作品</button></div></div>)}</div></>:
     <><p className="drawer-intro">上传照片或插画，选择底板大小、色数和转换方式，再预览效果。</p><button className="upload-zone" onClick={()=>imageInput.current?.click()}><ImagePlus size={30}/><strong>{imageFile?'更换图片':'选择图片'}</strong><small>PNG · JPG · WEBP</small></button>
       {imageFile&&<><div className="conversion-compare"><div><span>原始图片</span>{imageUrl&&<img src={imageUrl} alt="原图预览"/>}</div><div><span>拼豆效果</span>{converting?<div className="preview-loading">正在转换…</div>:imageResult?<BeadPreview board={imageResult} showEmpty/>:<div className="preview-loading">等待预览</div>}</div></div>
       <div className="convert-settings"><label>底板规格<select value={imageOpts.size} onChange={e=>setImageOpts(s=>({...s,size:+e.target.value}))}>{SUPPORTED_SIZES.map(n=><option key={n} value={n}>{n} × {n}</option>)}</select></label><label>色彩数量 <b>{imageOpts.maxColors} 色</b><input type="range" min="2" max="16" value={imageOpts.maxColors} onChange={e=>setImageOpts(s=>({...s,maxColors:+e.target.value}))}/></label><label>裁剪方式<select value={imageOpts.fit} onChange={e=>setImageOpts(s=>({...s,fit:e.target.value as ImageOptions['fit']}))}><option value="contain">完整显示（留白）</option><option value="cover">填满画板（裁剪）</option></select></label><label>色彩抖动<input type="checkbox" checked={imageOpts.dither} onChange={e=>setImageOpts(s=>({...s,dither:e.target.checked}))}/></label><label>保留透明区域<input type="checkbox" checked={imageOpts.transparent} onChange={e=>setImageOpts(s=>({...s,transparent:e.target.checked}))}/></label></div>
@@ -128,11 +130,11 @@ export default function App(){
    </aside>}
    <main className="atelier-workspace">
     <div className="workspace-heading"><div className="workspace-heading-left"><span className="workspace-overline">BEAD ATELIER <b>/</b> {section==='pattern'?'图纸制作':'自由创作'}</span><h1>{section==='pattern'?'一颗一颗，都有迹可循。':'把喜欢的颜色，慢慢拼出来。'}<span> ✳</span></h1></div>
-      <div className="workspace-view">{section==='editor'?<><div className="view-tabs"><button className={view==='2d'?'current':''} onClick={()=>setView('2d')}><Grid2X2 size={16}/> 平面</button><button className={view==='3d'?'current':''} onClick={()=>setView('3d')}><Box size={16}/> 3D 预览</button></div>{view==='3d'&&<button className={'fuse-mode '+(fused?'active':'')} onClick={()=>setFused(v=>!v)} title="切换普通拼豆与熨烫后预览（视觉模拟）"><Sparkles size={14}/>{fused?'返回拼豆':'熨烫预览'}</button>}</>:<button className="soft-action" onClick={()=>setSection('editor')}><ChevronLeft size={16}/> 返回创作</button>}</div>
+      <div className="workspace-view">{section==='editor'?<>{view==='2d'&&<label className="render-style-picker"><span>绘制样式</span><select aria-label="画板显示样式" value={renderStyle} onChange={e=>setRenderStyle(e.target.value as BeadRenderStyle)}><option value="pixel">▦ 像素色块</option><option value="beads">◉ 拼豆圆环</option><option value="dots">● 糖果圆点</option><option value="chart">▤ 色号方格</option></select></label>}<div className="view-tabs"><button className={view==='2d'?'current':''} onClick={()=>setView('2d')}><Grid2X2 size={16}/> 平面</button><button className={view==='3d'?'current':''} onClick={()=>setView('3d')}><Box size={16}/> 3D 预览</button></div>{view==='3d'&&<button className={'fuse-mode '+(fused?'active':'')} onClick={()=>setFused(v=>!v)} title="切换普通拼豆与熨烫后预览（视觉模拟）"><Sparkles size={14}/>{fused?'返回拼豆':'熨烫预览'}</button>}</>:<button className="soft-action" onClick={()=>setSection('editor')}><ChevronLeft size={16}/> 返回创作</button>}</div>
     </div>
     {section==='editor'?<div className="editor-surface">
       <div className="board-area">
-       {view==='2d'?<FlatBoard board={board} tool={tool} selected={selected} onCell={act} grid={settings.grid} zoom={zoom} justPlaced={placed} placementId={placementId} guide={inGuide?guide:null} pan={pan} onPan={setPan} onZoom={onZoom} onViewport={onViewport}/>:<Scene board={board} size={size} paint={act} selected={selected} erase={tool==='erase'} fused={fused} justPlaced={placed} placementId={placementId}/>}
+       {view==='2d'?<FlatBoard board={board} tool={tool} selected={selected} onCell={act} grid={settings.grid} zoom={zoom} justPlaced={placed} placementId={placementId} guide={inGuide?guide:null} renderStyle={renderStyle} pan={pan} onPan={setPan} onZoom={onZoom} onViewport={onViewport}/>:<Scene board={board} size={size} paint={act} selected={selected} erase={tool==='erase'} fused={fused} justPlaced={placed} placementId={placementId}/>}
        <div className="board-size-pill" onClick={()=>setPreferences(true)} title="在设置中更改底板尺寸">{size} × {size}</div>
        {view==='2d'&&panels.minimap&&<div className="mini-host"><Minimap board={board} zoom={zoom} pan={pan} viewport={metrics} onNavigate={setPan}/><button className="panel-dismiss" title="隐藏缩略图" onClick={()=>ui('minimap')}><X size={13}/></button></div>}
        {view==='2d'&&panels.frequent&&<div className="frequent-palette"><div className="frequent-title"><span><Star size={13}/> 常用颜色</span><button title="隐藏常用色板" onClick={()=>ui('frequent')}><X size={12}/></button></div><div className="favorite-swatches">{favorites.map(i=><button key={i} aria-label={'选择常用颜色 '+(i+1)} className={i===selected?'chosen':''} style={{background:colors[i]}} title={'选择色号 '+String(i+1).padStart(2,'0')} onClick={()=>selectColor(i)}/>)}</div><button className="pin-color" onClick={()=>toggleFavorite(selected)}><Star size={12} fill={favorites.includes(selected)?'#d39c7c':'none'}/>{favorites.includes(selected)?'取消收藏当前颜色':'收藏当前颜色'}</button></div>}
@@ -159,7 +161,7 @@ export default function App(){
     <label><span><strong>拼豆落位音效</strong><small>独立开关</small></span><input type="checkbox" checked={settings.sfx} onChange={e=>setSettings(s=>({...s,sfx:e.target.checked}))}/></label>
     <label><span><strong>音效音量</strong><small>{settings.sfxVolume}%</small></span><input type="range" value={settings.sfxVolume} min="0" max="100" onChange={e=>setSettings(s=>({...s,sfxVolume:+e.target.value}))}/></label>
     <div className="data-actions"><button onClick={()=>projectInput.current?.click()}><FolderOpen size={16}/> 打开项目</button><button onClick={saveProject}><Download size={16}/> 备份项目</button><button onClick={clearBoard}><Grid2X2 size={16}/> 清空画板</button></div>
-   </div>:<div className="guide-text"><p>选择「模板」跟着可爱动物图案拼，或到「图片」上传照片。图纸模块支持坐标、色号、材料统计、打印与 PDF 保存。</p><p>使用手形工具、空格拖动或右键拖动平移 2D 画布。Ctrl + 滚轮缩放，范围为 60–220%。右上角缩略图可以快速跳转位置。</p><p>快捷键 B 画笔、E 擦除、G 填色、I 取色、H 平移、Ctrl+Z 撤销。点击顶部滑杆图标，可以独立隐藏各个窗口。</p><p>数据只保存在本机浏览器中。建议定期通过「导出 → 项目 JSON」保存备份。</p></div>}
+   </div>:<div className="guide-text"><p>选择「模板」跟着可爱动物图案拼，或到「图片」上传照片。图纸模块支持坐标、色号、材料统计、打印与 PDF 保存。</p><p>使用手形工具、空格拖动或右键拖动平移 2D 画布。直接滚动鼠标滚轮以指针位置为中心缩放，范围为 75–300%，不会出现无限画布；缩放后可以在边界内平移。右上角缩略图可以快速跳转位置。</p><p>快捷键 B 画笔、E 擦除、G 填色、I 取色、H 平移、Ctrl+Z 撤销。点击顶部滑杆图标，可以独立隐藏各个窗口。</p><p>数据只保存在本机浏览器中。建议定期通过「导出 → 项目 JSON」保存备份。</p></div>}
   </section></div>}
  </div>;
 }

@@ -1,7 +1,13 @@
-import type { Board } from './board';
-import { N, colors } from './board';
-export default function TemplateThumb({board}: {board:Board}){
- return <svg className="template-thumb" viewBox="0 0 240 240" role="img" aria-label="拼豆图案缩略图">
-  {board.map((v,i)=>v===null?null:<g key={i}><circle cx={i%N*10+5} cy={Math.floor(i/N)*10+5} r="4.85" fill={colors[v]}/><circle cx={i%N*10+5} cy={Math.floor(i/N)*10+5} r="1.55" fill="#fff9f2"/></g>)}
- </svg>;
+import type {Board} from './board';
+import {boardSize,colors} from './board';
+import type {BeadRenderStyle} from './FlatBoard';
+type Props={board:Board;renderStyle?:BeadRenderStyle};
+export default function TemplateThumb({board,renderStyle='pixel'}:Props){
+ const size=boardSize(board);
+ return <svg className={'template-thumb thumbnail-'+renderStyle} viewBox={`0 0 ${size} ${size}`} role="img" aria-label={renderStyle==='pixel'?'清晰像素图案缩略图':'拼豆图案缩略图'} preserveAspectRatio="xMidYMid meet">
+  {board.map((v,i)=>{if(v===null)return null;const x=i%size,y=Math.floor(i/size),color=colors[v];
+   if(renderStyle==='pixel'||renderStyle==='chart')return <g key={i}><rect x={x} y={y} width="1" height="1" fill={color}/>{renderStyle==='chart'&&size<=29&&<text x={x+.5} y={y+.7} fontSize=".31" textAnchor="middle" fill={[12,10,9,5,7].includes(v)?'#fff':'#54453e'}>{v+1}</text>}</g>;
+   return <g key={i}><circle cx={x+.5} cy={y+.5} r=".46" fill={color}/>{renderStyle==='beads'&&<circle cx={x+.5} cy={y+.5} r=".16" fill="#fffaf5"/>}</g>;
+  })}
+ </svg>
 }
