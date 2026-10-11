@@ -85,11 +85,11 @@ export default function FlatBoard({board,tool,selected,onCell,grid,zoom,justPlac
  const border=size>0?100/size:0;
  return <div ref={host} className={'finite-canvas '+(tool==='hand'||space?'panning':'')+' mode-'+renderStyle}
   onPointerDown={pointerDown} onPointerMove={pointerMove} onPointerUp={clearGesture} onPointerCancel={clearGesture} onLostPointerCapture={clearGesture} onContextMenu={e=>e.preventDefault()}>
-  <div className="finite-artboard" style={canvasStyle}>
+  <div className="finite-artboard" style={canvasStyle}><div className="finite-grid-inner">
    <canvas ref={canvas} className="finite-pixels" aria-label="有边界的平面拼豆画板，滚轮缩放，右键或空格拖拽"/>
    {hover>=0&&tool!=='hand'&&<span className="finite-cell-hover" style={{left:(hover%size*border)+'%',top:(Math.floor(hover/size)*border)+'%',width:border+'%',height:border+'%'}}/>}
    {justPlaced>=0&&board[justPlaced]!==null&&<span key={placementId} className={'bead-landing style-'+renderStyle} style={{left:((justPlaced%size+.5)*border)+'%',top:((Math.floor(justPlaced/size)+.5)*border)+'%',width:border+'%',background:colors[board[justPlaced]!]}}>{renderStyle==='beads'&&<i/>}</span>}
-  </div>
+  </div></div>
   <span className="finite-shortcuts">滚轮缩放 · 空格 / 右键拖动平移 · {MIN_ZOOM}–{MAX_ZOOM}%</span>
  </div>
 }

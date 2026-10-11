@@ -33,12 +33,13 @@ The goal is a creative tool that feels **delightful, focused and tactile**, rath
 
 | Area | Available now |
 | --- | --- |
-| Board and navigation | 24×24, 29×29 and 52×52 boards; drag-to-pan 2D canvas, 60%–220% zoom, interactive minimap |
+| Board and navigation | 24×24, 29×29 and 52×52 boards; drag-to-pan 2D canvas, 75%–300% bounded zoom, centered at the pointer with direct mouse-wheel input, interactive minimap |
 | Personal layout | Independently show or hide navigation, tools, palette, favorites, minimap, animation and status bars |
 | Drawing tools | Brush, eraser, flood fill, picker, hand/pan, undo and redo |
+| Visual modes | Solid pixels, hollow fuse beads, candy dots, or numbered color chart |
 | Quick palette | 16 demonstration colors with a persistent favorite-color tray |
 | Image conversion | Original/converted preview, board dimensions, 2–16 colors, approximate Lab matching, optional dithering, crop and alpha support |
-| Beginner projects | Six cute animal templates, translucent tracing guides and color-specific progress |
+| Beginner projects | Eight handcrafted animal pixel patterns (six 29×29 and two 52×52), translucent tracing guides and color-specific progress |
 | 3D mode | Instanced bead meshes, 3D pegboard, lighting and visual-only fused-bead simulation |
 | Printable patterns | Coordinates, numbered cells, five-cell guides, quantities, SVG, CSV, print/PDF |
 | Files | PNG image, editable JSON project import/export, automatic browser-local storage |
@@ -61,6 +62,9 @@ The goal is a creative tool that feels **delightful, focused and tactile**, rath
 | `E` | Eraser |
 | `G` | Flood fill |
 | `I` | Color picker |
+| `H` or `Space` + drag | Pan the bounded 2D canvas |
+| Mouse wheel (2D) | Zoom toward the cursor, 75%–300% |
+| Right drag (2D) | Pan the canvas |
 | `Ctrl / Cmd + Z` | Undo |
 | `Ctrl / Cmd + Shift + Z` or `Ctrl / Cmd + Y` | Redo |
 | Right drag (3D) | Orbit camera |
