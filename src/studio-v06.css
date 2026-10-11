@@ -75,3 +75,7 @@
 @media(max-width:950px){.workspace-heading{gap:9px}.create-canvas-button{padding:8px 9px}.workspace-heading h1{font-size:19px}}
 @media(max-width:680px){.workspace-view{flex-wrap:wrap;justify-content:flex-end}.create-canvas-button{padding:7px 9px;font-size:10px}.newcanvas-card{padding:24px 18px 19px}.newcanvas-heading h2{font-size:22px}.canvas-sizes{gap:6px}.canvas-sizes button{padding:10px 1px}.canvas-guide-list button{min-width:0}.tour-panel{max-height:42vh;overflow:auto}.welcome-card{padding:26px 20px 18px}.welcome-card h2{font-size:22px}.finite-artboard.axis-visible{padding:18px 5px 5px 19px}.canvas-axis{font-size:6px}.top-axis{top:-13px}.left-axis{left:-19px}}
 @media(prefers-reduced-motion:reduce){.welcome-paw,.float-bead,.welcome-card,.tour-panel,.tour-highlight{animation:none!important;transition:none!important}}
+
+.pattern-empty-message{display:grid;justify-items:start;gap:7px;background:#fff6ee;border:1px solid #f0dfd3;border-radius:12px;color:#b18c77;padding:14px 13px;margin:14px 0}
+.pattern-empty-message strong{font-size:12px;color:#876c5e}.pattern-empty-message span{font-size:10px;color:#a7958a;line-height:1.6}
+.pattern-empty-message button{display:flex;align-items:center;justify-content:center;gap:6px;background:#d5a18d;color:#fff;border:0;border-radius:8px;font-size:11px;font-weight:700;padding:9px 12px;margin-top:3px}

@@ -21,7 +21,7 @@ export default function Onboarding({onCreate,onStep,request}:Props){
  useEffect(()=>{if(mode!=='tour')return;let frame=0;let nextFrame=0;const measure=()=>{const el=document.querySelector('[data-tour="'+steps[step].target+'"]');setFocus(el?.getBoundingClientRect()??null);setViewport({w:window.innerWidth,h:window.innerHeight})};frame=requestAnimationFrame(()=>{nextFrame=requestAnimationFrame(measure)});window.addEventListener('resize',measure);const id=window.setInterval(measure,650);return()=>{cancelAnimationFrame(frame);cancelAnimationFrame(nextFrame);window.removeEventListener('resize',measure);window.clearInterval(id)}},[mode,step]);
  function finish(){localStorage.setItem('atelier-onboarding-v1','complete');setMode('off');setFocus(null);onStep('board')}
  function begin(){localStorage.setItem('atelier-onboarding-v1','started');setMode('tour');setStep(0)}
- function go(n:number){if(n>=steps.length){finish();return}setStep(Math.max(0,n))}
+ function go(n:number){if(n>=steps.length){finish();onCreate();return}setStep(Math.max(0,n))}
  function create(){finish();onCreate()}
  if(mode==='off')return null;
  if(mode==='welcome')return <div className="welcome-overlay" role="dialog" aria-modal="true" aria-label="欢迎来到 Bead Atelier">
