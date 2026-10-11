@@ -39,7 +39,7 @@ The goal is a creative tool that feels **delightful, focused and tactile**, rath
 | Visual modes | Solid pixels, hollow fuse beads, candy dots, or numbered color chart |
 | Quick palette | 16 demonstration colors with a persistent favorite-color tray |
 | Image conversion | Original/converted preview, board dimensions, 2–16 colors, approximate Lab matching, optional dithering, crop and alpha support |
-| Beginner projects | Eight handcrafted animal pixel patterns (six 29×29 and two 52×52), translucent tracing guides and color-specific progress |
+| Beginner projects | Eight reference-inspired cute animal bead designs, all 29×29 (bear, calico cat, shiba, bunny, penguin, frog, panda and chick), translucent tracing guides and color-specific progress |
 | 3D mode | Instanced bead meshes, 3D pegboard, lighting and visual-only fused-bead simulation |
 | Printable patterns | Coordinates, numbered cells, five-cell guides, quantities, SVG, CSV, print/PDF |
 | Files | PNG image, editable JSON project import/export, automatic browser-local storage |
