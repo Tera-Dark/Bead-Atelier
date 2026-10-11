@@ -7,7 +7,7 @@ type Point={x:number;y:number};
 type Viewport={width:number;height:number;boardPx:number};
 type Props={
  board:Board;tool:Tool;selected:number;onCell:(i:number)=>void;grid:boolean;zoom:number;
- justPlaced:number;placementId?:number;guide?:Board|null;renderStyle:BeadRenderStyle;
+ justPlaced:number;placementId?:number;guide?:Board|null;renderStyle:BeadRenderStyle;guideSpacing:0|5|10;showCoords:boolean;onStrokeStart?:()=>void;onStrokeEnd?:()=>void;
  pan:Point;onPan:(p:Point)=>void;onZoom:(z:number)=>void;onViewport:(v:Viewport)=>void
 };
 export const MIN_ZOOM=75,MAX_ZOOM=300;
@@ -18,7 +18,7 @@ export function clampCanvasPan(p:Point,zoom:number,viewport:Viewport):Point{
  return {x:clamp(p.x,-limit(viewport.width),limit(viewport.width)),y:clamp(p.y,-limit(viewport.height),limit(viewport.height))};
 }
 function computeBase(w:number,h:number){return Math.max(165,Math.min(780,Math.max(165,w-66),Math.max(165,h-62)))}
-export default function FlatBoard({board,tool,selected,onCell,grid,zoom,justPlaced,placementId=0,guide,renderStyle,pan,onPan,onZoom,onViewport}:Props){
+export default function FlatBoard({board,tool,selected,onCell,grid,zoom,justPlaced,placementId=0,guide,renderStyle,guideSpacing,showCoords,onStrokeStart,onStrokeEnd,pan,onPan,onZoom,onViewport}:Props){
  const host=useRef<HTMLDivElement>(null),canvas=useRef<HTMLCanvasElement>(null);
  const [dims,setDims]=useState({width:740,height:620,boardPx:558});
  const [hover,setHover]=useState(-1),[space,setSpace]=useState(false);
@@ -63,7 +63,8 @@ export default function FlatBoard({board,tool,selected,onCell,grid,zoom,justPlac
     }
   }
  }
- },[board,size,grid,zoom,guide,renderStyle]);
+ if(guideSpacing>0){ctx.save();ctx.strokeStyle='#cc9a86';ctx.lineWidth=size>=52?1.4:1.8;ctx.beginPath();for(let j=0;j<=size;j+=guideSpacing){const p=j*unit+.5;ctx.moveTo(p,0);ctx.lineTo(p,w);ctx.moveTo(0,p);ctx.lineTo(w,p)}ctx.stroke();ctx.restore()}
+ },[board,size,grid,zoom,guide,renderStyle,guideSpacing]);
  const getIndex=(clientX:number,clientY:number)=>{const rect=canvas.current?.getBoundingClientRect();if(!rect)return -1;const x=Math.floor((clientX-rect.left)/rect.width*size),y=Math.floor((clientY-rect.top)/rect.height*size);return x>=0&&x<size&&y>=0&&y<size?y*size+x:-1};
  const pointerDown=(e:ReactPointerEvent<HTMLDivElement>)=>{
   if(e.button!==0&&e.button!==1&&e.button!==2)return;
@@ -71,24 +72,25 @@ export default function FlatBoard({board,tool,selected,onCell,grid,zoom,justPlac
   const drag=e.button!==0||space||tool==='hand';
   const index=getIndex(e.clientX,e.clientY);
   gesture.current={type:drag?'pan':'draw',startX:e.clientX,startY:e.clientY,pan:{...pan},last:index};
-  if(!drag&&index>=0)onCell(index)
+  if(!drag&&index>=0){onStrokeStart?.();onCell(index)}
  };
  const pointerMove=(e:ReactPointerEvent<HTMLDivElement>)=>{
   const index=getIndex(e.clientX,e.clientY);setHover(prev=>prev===index?prev:index);
   const g=gesture.current;if(!g)return;
   if(g.type==='pan'){onPan(clampCanvasPan({x:g.pan.x+e.clientX-g.startX,y:g.pan.y+e.clientY-g.startY},zoom,dims))}
-  else if(index>=0&&index!==g.last){g.last=index;onCell(index)}
+  else if(index>=0&&index!==g.last){const prev=g.last;g.last=index;if(prev<0){onCell(index)}else{let x0=prev%size,y0=Math.floor(prev/size),x1=index%size,y1=Math.floor(index/size);const dx=Math.abs(x1-x0),dy=-Math.abs(y1-y0),sx=x0<x1?1:-1,sy=y0<y1?1:-1;let err=dx+dy;while(x0!==x1||y0!==y1){const e2=2*err;if(e2>=dy){err+=dy;x0+=sx}if(e2<=dx){err+=dx;y0+=sy}if(x0>=0&&y0>=0&&x0<size&&y0<size)onCell(y0*size+x0)}}}
  };
- const clearGesture=()=>{gesture.current=null};
+ const clearGesture=()=>{if(gesture.current?.type==='draw')onStrokeEnd?.();gesture.current=null};
  const scale=zoom/100;
  const canvasStyle:CSSProperties={width:dims.boardPx,height:dims.boardPx,transform:`translate(calc(-50% + ${pan.x}px),calc(-50% + ${pan.y}px)) scale(${scale})`};
  const border=size>0?100/size:0;
  return <div ref={host} className={'finite-canvas '+(tool==='hand'||space?'panning':'')+' mode-'+renderStyle}
   onPointerDown={pointerDown} onPointerMove={pointerMove} onPointerUp={clearGesture} onPointerCancel={clearGesture} onLostPointerCapture={clearGesture} onContextMenu={e=>e.preventDefault()}>
-  <div className="finite-artboard" style={canvasStyle}><div className="finite-grid-inner">
+  <div className={'finite-artboard '+(showCoords?'axis-visible':'')} style={canvasStyle}><div className="finite-grid-inner">
    <canvas ref={canvas} className="finite-pixels" aria-label="有边界的平面拼豆画板，滚轮缩放，右键或空格拖拽"/>
    {hover>=0&&tool!=='hand'&&<span className="finite-cell-hover" style={{left:(hover%size*border)+'%',top:(Math.floor(hover/size)*border)+'%',width:border+'%',height:border+'%'}}/>}
    {justPlaced>=0&&board[justPlaced]!==null&&<span key={placementId} className={'bead-landing style-'+renderStyle} style={{left:((justPlaced%size+.5)*border)+'%',top:((Math.floor(justPlaced/size)+.5)*border)+'%',width:border+'%',background:colors[board[justPlaced]!]}}>{renderStyle==='beads'&&<i/>}</span>}
+   {showCoords&&<><div className="canvas-axis top-axis" aria-hidden="true">{Array.from({length:size},(_,i)=><span key={i} style={{left:((i+.5)/size*100)+'%'}}>{i+1}</span>)}</div><div className="canvas-axis left-axis" aria-hidden="true">{Array.from({length:size},(_,i)=><span key={i} style={{top:((i+.5)/size*100)+'%'}}>{i+1}</span>)}</div></>}
   </div></div>
   <span className="finite-shortcuts">滚轮缩放 · 空格 / 右键拖动平移 · {MIN_ZOOM}–{MAX_ZOOM}%</span>
  </div>

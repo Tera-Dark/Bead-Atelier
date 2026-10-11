@@ -1,0 +1,77 @@
+/* Bead Atelier v0.6 · first-run experience, structured canvas and calm creation flows */
+.create-canvas-button{display:flex;align-items:center;gap:7px;padding:9px 12px;border:1px solid #efdcd3;border-radius:10px;background:#fff9f5;color:#aa7c69;font-size:11px;font-weight:750;white-space:nowrap;box-shadow:0 1px 2px #7052420a;transition:background .18s,transform .18s}
+.create-canvas-button:hover{background:#f9eee7;transform:translateY(-1px)}
+.create-canvas-button:focus-visible{outline:2px solid #cb947f;outline-offset:2px}
+.finite-artboard.axis-visible{padding:26px 9px 9px 26px}
+.finite-artboard.axis-visible .finite-grid-inner{width:100%;height:100%}
+.canvas-axis{position:absolute;z-index:2;pointer-events:none;font-family:Arial,"PingFang SC",sans-serif;font-size:8px;color:#af998a;font-weight:600}
+.canvas-axis span{position:absolute;display:block;white-space:nowrap;line-height:1}
+.top-axis{left:0;right:0;top:-18px;height:16px}
+.top-axis span{top:3px;transform:translateX(-50%)}
+.left-axis{top:0;bottom:0;left:-24px;width:21px}
+.left-axis span{left:50%;transform:translate(-50%,-50%)}
+.newcanvas-backdrop{z-index:100}
+.newcanvas-card{position:relative;background:#fffdfa;max-width:570px;width:min(570px,100%);max-height:92vh;overflow:auto;padding:30px 34px 26px;border-radius:22px;box-shadow:0 24px 90px #493c3245;border:1px solid #f5e4d9}
+.newcanvas-heading>span,.welcome-eyebrow{color:#c79d88;font-size:10px;font-weight:800;letter-spacing:2.3px}
+.newcanvas-heading h2{color:#55463e;font-size:25px;line-height:1.4;letter-spacing:-.8px;margin:10px 0}
+.newcanvas-heading p{color:#ae9d91;font-size:12px;line-height:1.8;margin:7px 0 22px}
+.newcanvas-label{display:grid;gap:9px;color:#867166;font-size:12px;font-weight:750;margin-bottom:24px}
+.newcanvas-label input{border:1px solid #ede0d6;border-radius:10px;background:#fefbf8;padding:11px 13px;color:#61534e;font-size:13px;width:100%}
+.newcanvas-section{display:flex;align-items:baseline;justify-content:space-between;font-size:12px;color:#76645b;font-weight:750;margin:15px 0 11px}
+.newcanvas-section small{font-size:10px;font-weight:400;color:#b7a69b}
+.canvas-sizes{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.canvas-sizes button{position:relative;display:flex;align-items:center;flex-direction:column;gap:9px;background:#fff9f5;border:1px solid #f1e5de;border-radius:14px;padding:13px 5px 14px;color:#705c54;transition:transform .17s,border-color .17s}
+.canvas-sizes button:hover{transform:translateY(-2px)}
+.canvas-sizes button.selected{border-color:#dba995;background:#fff4ed;box-shadow:0 0 0 2px #f5e1d5}
+.canvas-sizes strong{font-size:13px}.canvas-sizes small{font-size:10px;color:#b5a298}
+.size-grid{height:50px;width:50px;border:1px solid #decdbd;border-radius:4px;background-color:#fff;background-image:linear-gradient(#ebd8ca 1px,transparent 1px),linear-gradient(90deg,#ebd8ca 1px,transparent 1px);background-size:9px 9px;box-shadow:0 3px 9px #ba99871e}
+.size-check{position:absolute;top:9px;right:9px;color:#c68d77}
+.canvas-guide-list{display:flex;gap:9px;margin-bottom:15px;flex-wrap:wrap}
+.canvas-guide-list button{flex:1;min-width:90px;border:1px solid #f1e5dd;border-radius:9px;padding:10px 7px;background:#fff9f5;color:#987e70;font-size:11px}
+.canvas-guide-list button.selected{border-color:#dbad98;background:#faeee6;color:#a77864;font-weight:750}
+.coords-toggle{display:flex;align-items:center;justify-content:space-between;border-top:1px solid #f3e9e1;padding:15px 0;gap:16px;color:#766258;font-size:11px}
+.coords-toggle span{font-weight:750}.coords-toggle small{display:block;margin-top:5px;color:#b0a296;font-weight:400}
+.coords-toggle input{accent-color:#cf9a87}
+.overwrite-alert{border:1px solid #efd5c4;background:#fff8f0;border-radius:11px;color:#99715c;font-size:11px;padding:13px;display:grid;gap:6px;line-height:1.6}
+.overwrite-alert b{color:#a96c57}.overwrite-alert button{display:flex;align-items:center;justify-content:center;gap:7px;width:max-content;border:1px solid #dfb29e;background:#fff;border-radius:7px;color:#ac806c;padding:7px 10px;font-size:10px}
+.newcanvas-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:19px}
+.newcanvas-actions button{border-radius:10px;padding:11px 20px;font-size:12px;font-weight:750}
+.newcanvas-actions .cancel{background:#f8f5f2;border:0;color:#9b8b7f}
+.newcanvas-actions .create{border:0;background:#daa18e;color:#fff;display:flex;align-items:center;gap:8px}
+.newcanvas-actions .create:hover{background:#c68e7e}
+.tutorial-restart{margin-top:8px;display:flex;align-items:center;justify-content:center;gap:8px;border-radius:9px;border:1px solid #f1ded5;background:#fff7f1;color:#b28370;padding:10px;font-size:11px;width:100%}
+.welcome-overlay{position:fixed;inset:0;z-index:120;display:grid;place-items:center;padding:14px;background:#342a2966;backdrop-filter:blur(5px)}
+.welcome-card{width:min(430px,100%);padding:32px 35px 24px;background:#fffdfa;border:1px solid #ffefe3;border-radius:25px;text-align:center;box-shadow:0 30px 95px #30231956;animation:welcome-rise .4s both}
+.welcome-art{position:relative;margin:0 auto 17px;width:158px;height:115px;background:radial-gradient(circle,#faede4 16%,transparent 72%);display:grid;place-items:center}
+.welcome-paw{font-size:80px;color:#df9eaa;text-shadow:0 5px 0 #f6d1cf,0 10px 18px #cf97a753;animation:welcome-bounce 2.6s ease-in-out infinite}
+.float-bead{position:absolute;width:23px;height:23px;border:5px solid #fff3ec;border-radius:50%;box-shadow:0 2px 6px #81675c29}
+.float-bead.b1{background:#dba4a1;top:12px;left:5px;animation:drift 2.4s ease-in-out infinite}
+.float-bead.b2{background:#a9c6b3;top:1px;right:13px;animation:drift 2.8s ease-in-out infinite .3s}
+.float-bead.b3{background:#eecb8f;bottom:6px;left:22px;animation:drift 2.7s ease-in-out infinite .6s}
+.float-bead.b4{background:#c5abd3;bottom:5px;right:8px;animation:drift 2.9s ease-in-out infinite .5s}
+.welcome-card h2{font-size:27px;line-height:1.45;margin:10px 0;color:#51413d;letter-spacing:-.5px}.welcome-card h2 em{font-style:normal;color:#cf9787}
+.welcome-card p{font-size:12px;color:#a89488;line-height:1.95;margin:10px 0 24px}
+.welcome-primary,.welcome-secondary,.welcome-skip{width:100%;border:0;display:flex;align-items:center;justify-content:center;gap:8px;border-radius:11px;font-size:12px}
+.welcome-primary{background:#dda58f;color:#fff;padding:14px;font-weight:800;box-shadow:0 6px 18px #cc9b804a}.welcome-primary:hover{background:#ce947e}
+.welcome-secondary{background:#f9f0e9;color:#ad806e;margin-top:10px;padding:12px;font-weight:700}.welcome-secondary:hover{background:#f6e7dc}
+.welcome-skip{background:none;color:#b9aba0;margin-top:10px;padding:7px;font-size:11px}
+.tour-layer{position:fixed;inset:0;z-index:110;pointer-events:none}
+.tour-highlight{position:fixed;z-index:111;border:2px solid #edb8a2;border-radius:15px;box-shadow:0 0 0 9999px #342a287a,0 0 0 5px #f5d8cbb0;pointer-events:none;transition:top .3s cubic-bezier(.2,.75,.2,1),left .3s,width .3s,height .3s;animation:tour-glow 2s ease-in-out infinite}
+.tour-panel{position:fixed;z-index:112;max-width:calc(100vw - 26px);pointer-events:auto;border:1px solid #f0dcd1;border-radius:17px;background:#fffdfa;box-shadow:0 15px 58px #2d211f4a;padding:17px 19px 15px;animation:tour-rise .25s ease-out}
+.tour-topline{display:flex;align-items:center;justify-content:space-between;font-size:10px;letter-spacing:1.3px;color:#caa08c;font-weight:800}
+.tour-topline button{border:0;background:#f8f0ea;color:#aa9689;border-radius:8px;width:26px;height:26px;display:grid;place-items:center}
+.tour-icon{display:flex;align-items:center;gap:7px;color:#ce9e89;margin-top:10px}.tour-icon span{font-size:17px;color:#e8c79e}
+.tour-panel h3{font-size:16px;color:#4c3e39;line-height:1.3;margin:8px 0 5px}
+.tour-panel p{font-size:12px;color:#a39387;line-height:1.75;margin:0 0 15px}
+.tour-footer{display:flex;align-items:center;justify-content:space-between;gap:10px;border-top:1px solid #f2e9e2;padding-top:12px}
+.tour-dots{display:flex;gap:5px}.tour-dots span{width:6px;height:6px;background:#e9dad0;border-radius:4px}.tour-dots span.current{width:18px;background:#daa18d}
+.tour-actions{display:flex;gap:8px}.tour-actions button{border:1px solid #f1e4da;border-radius:8px;display:flex;align-items:center;justify-content:center;gap:7px;height:33px;min-width:35px;background:#fff;color:#ac8b7c;font-size:11px}
+.tour-actions button.next{border:0;background:#dba28e;color:#fff;padding:0 13px;font-weight:750}
+@keyframes welcome-rise{from{opacity:0;transform:translateY(20px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes welcome-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes drift{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+@keyframes tour-rise{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:translateY(0)}}
+@keyframes tour-glow{0%,100%{border-color:#edb8a2}50%{border-color:#f6d2a7}}
+@media(max-width:950px){.workspace-heading{gap:9px}.create-canvas-button{padding:8px 9px}.workspace-heading h1{font-size:19px}}
+@media(max-width:680px){.workspace-view{flex-wrap:wrap;justify-content:flex-end}.create-canvas-button{padding:7px 9px;font-size:10px}.newcanvas-card{padding:24px 18px 19px}.newcanvas-heading h2{font-size:22px}.canvas-sizes{gap:6px}.canvas-sizes button{padding:10px 1px}.canvas-guide-list button{min-width:0}.tour-panel{max-height:42vh;overflow:auto}.welcome-card{padding:26px 20px 18px}.welcome-card h2{font-size:22px}.finite-artboard.axis-visible{padding:18px 5px 5px 19px}.canvas-axis{font-size:6px}.top-axis{top:-13px}.left-axis{left:-19px}}
+@media(prefers-reduced-motion:reduce){.welcome-paw,.float-bead,.welcome-card,.tour-panel,.tour-highlight{animation:none!important;transition:none!important}}
