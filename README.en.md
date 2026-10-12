@@ -37,15 +37,15 @@ The goal is a creative tool that feels **delightful, focused and tactile**, rath
 | Personal layout | Independently show or hide navigation, tools, palette, favorites, minimap, animation and status bars |
 | Drawing tools | Brush, eraser, flood fill, picker, hand/pan, undo and redo |
 | Visual modes | Solid pixels, hollow fuse beads, candy dots, or numbered color chart |
-| Quick palette | 16 demonstration colors with a persistent favorite-color tray |
-| Image conversion | Original/converted preview, board dimensions, 2–16 colors, approximate Lab matching, optional dithering, crop and alpha support |
+| Color management | 30 sample colors plus up to 80 custom colors; HEX/RGB/HSV, optional system eyedropper, favorites, recents, search, palette JSON import/export and bulk recoloring |
+| Image conversion | Side-by-side previews, 2–48 colors (limited by available palette), approximate Lab matching, dithering, cropping, transparency and custom-color matching |
 | Beginner projects | Eight reference-inspired cute animal bead designs, all 29×29 (bear, calico cat, shiba, bunny, penguin, frog, panda and chick), translucent tracing guides and color-specific progress |
 | 3D mode | Instanced bead meshes, 3D pegboard, lighting and visual-only fused-bead simulation |
 | Printable patterns | Coordinates, numbered cells, five-cell guides, quantities, SVG, CSV, print/PDF |
 | Files | PNG image, editable JSON project import/export, automatic browser-local storage |
 | Ambience | Opt-in synthesized background melody, soft placement sounds and assembly playback |
 
-> **Current limitations:** The 16-color palette is a **demonstration palette**, not verified physical bead-brand color data. You may add your own pattern color labels, but should check them against real supplies. The fused-bead view is a visual approximation, not a physical heat simulation. Music must be enabled by the user. **The app UI is currently in Chinese**; English localization is planned.
+> **Current limitations:** The built-in 30 colors and custom picks are **virtual color samples**, not verified physical bead-brand color data. You may add your own pattern color labels, but should check them against real supplies. The fused-bead view is a visual approximation, not a physical heat simulation. Music must be enabled by the user. **The app UI is currently in Chinese**; English localization is planned.
 
 ## 🎮 Getting started
 
@@ -63,6 +63,7 @@ The goal is a creative tool that feels **delightful, focused and tactile**, rath
 | `E` | Eraser |
 | `G` | Flood fill |
 | `I` | Color picker |
+| `P` | Open / close color studio |
 | `H` or `Space` + drag | Pan the bounded 2D canvas |
 | Mouse wheel (2D) | Zoom toward the cursor, 75%–300% |
 | Right drag (2D) | Pan the canvas |
@@ -72,6 +73,12 @@ The goal is a creative tool that feels **delightful, focused and tactile**, rath
 | `Ctrl / Cmd + Shift + Z` or `Ctrl / Cmd + Y` | Redo |
 | Right drag (3D) | Orbit camera |
 | Mouse wheel (3D) | Zoom camera |
+
+### Custom colors and recoloring
+
+Open **Colors** in the side rail or **Custom color picker** in the bottom palette. You can enter HEX and RGB values, adjust HSV sliders, or use the operating-system screen eyedropper where supported. Save new colors without shifting existing palette IDs. Archiving hides a custom swatch without erasing the artwork that uses it.
+
+The **Used in artwork** view tracks per-color counts; **Replace colors** swaps all beads of a chosen color in a single undoable operation. JSON project files include the palette for cross-device restoration. A separate palette JSON import/export option is available. Color data stays in browser-local storage.
 
 ## 🛠 Local development
 

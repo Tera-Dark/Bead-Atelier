@@ -49,7 +49,7 @@ export function setArchived(index:number,archived:boolean){
 export function registerColorForImport(value:string,desiredName?:string){
  const hex=normalizeHex(value);if(!hex)throw Error('项目文件包含无效颜色');
  const index=colors.findIndex(v=>v.toUpperCase()===hex);
- if(index!==-1)return index;
+ if(index!==-1){if(!isBuiltIn(index)&&colorMeta(index).archived)setArchived(index,false);return index;}
  return addColor(hex,desiredName||'导入颜色');
 }
 export function customPaletteExport(){
